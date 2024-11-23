@@ -1,0 +1,442 @@
+{% extends "base.html" %}
+
+{% block title %}Trends{% endblock %}
+
+{% block navbar %}
+<div class="nav nav-black">
+    <div class="nav nav-red">
+        <div class="nav nav-white">
+            <ul class="list">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('explore') }}">Explore</a></li>
+                <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        aria-expanded="false">Account</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/notifications">Notifications</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                </li>
+                <li><a class="header-btn" href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<header class="header">
+    <div class="container-fluid">
+        <div class="blur-bg">
+            <div class="row">
+                <div class="col-md-4 col-4">
+                    <a href="/">
+                        <img class="img-fluid" src="{{ url_for('static', filename='images/Mu\'een_transparent2.png') }}"
+                            alt="logo" width="193" height="57">
+                    </a>
+                </div>
+                <div class="col-md-8 col-8 d-flex align-items-center justify-content-end">
+                    <ul class="nav-menu">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/explore">Explore</a></li>
+                        <li><a href="/about-us">About Us</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                aria-expanded="false">Account</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/notifications">Notifications</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="header-btn" href="#">Contact Us</a></li>
+                    </ul>
+                    <button class="nav-btn open-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="nav-btn close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2 col-md-12 bg-liner-serach-sidebar p-0">
+                <div class="sidebar library">
+                    <ul class="nav-links">
+                        <li><a href="{{ url_for('home') }}"><span class="link_name">Home</span></a></li>
+                        <li><a href="{{ url_for('library') }}"><span class="link_name">My Library</span></a></li>
+                        <li><a href="{{ url_for('interests') }}"><span class="link_name">My Interests</span></a></li>
+                        <li class="active"><a href="{{ url_for('trends') }}"><span class="link_name">Flow Of
+                                    Trends</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-10 col-md-12 bg-liner-serach-sidebar padding-custom-150">
+                <div class="top-chart">
+                    <div class="row align-items-start">
+                        {% for search in top_3_searches %}
+                        <div class="col-md-4">
+                            <a href="{{ url_for('search') }}?query={{ search[0] }}" class="explore-item">
+                                <div class="d-flex align-items-center justify-content-center explore-content">
+                                    <div class="searches-heading text-center">
+                                        <h4>{{ search[0] }}</h4>
+                                        <h5>{{ search[1] }} Searches</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="bottom-chart">
+                    <div class="row equal-height">
+                        <div class="col-xl-8 col-lg-12">
+                            <div class="main-right-chart">
+                                <h5 class="chart-title">Interest Over Time</h5>
+
+                                <div class="topics-filter">
+                                    <div class="interested-topic">
+                                        <div>
+                                            <span>Interested Topics</span>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn btn-custom dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Select Interests
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="select-top-5">
+                                                        <label class="form-check-label" for="select-top-5">
+                                                            Select Top 5
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                {% for interest in interests %}
+                                                <li>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input interest-checkbox"
+                                                            type="checkbox" value="{{ interest }}"
+                                                            id="interest-{{ loop.index }}">
+                                                        <label class="form-check-label" for="interest-{{ loop.index }}">
+                                                            {{ interest }}
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="interested-topic">
+                                        <div>
+                                            <span>Select Time Frame</span>
+                                        </div>
+                                        <div>
+                                            <select class="form-select" id="time-frame-select-interest">
+                                                <option value="now 1-d">Past Day</option>
+                                                <option value="now 7-d">Past 7 Days</option>
+                                                <option value="today 1-m">Past 30 Days</option>
+                                                <option value="today 12-m" selected>Past 12 Months</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="chart">
+                                    <!-- Google Trends Widget -->
+                                    <script type="text/javascript"
+                                        src="https://ssl.gstatic.com/trends_nrtr/3728_RC01/embed_loader.js"></script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-12">
+                            <div class="top-searches-section">
+                                <div>
+                                    <div class="top-heading">
+                                        <div>
+                                            <h5>Top Searches</h5>
+                                        </div>
+                                        <div>
+                                            <select class="form-select" id="inlineFormSelectPref">
+                                                <option value="4" {% if time_frame=='4' %}selected{% endif %}>ALL TIME
+                                                </option>
+                                                <option value="0" {% if time_frame=='0' %}selected{% endif %}>TODAY
+                                                </option>
+                                                <option value="1" {% if time_frame=='1' %}selected{% endif %}>LAST WEEK
+                                                </option>
+                                                <option value="2" {% if time_frame=='2' %}selected{% endif %}>LAST MONTH
+                                                </option>
+                                                <option value="3" {% if time_frame=='3' %}selected{% endif %}>LAST YEAR
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="top-searches-bottom-section">
+                                        {% for search in top_searches %}
+                                        <div class="row">
+                                            <div class="col-1"><span>{{ loop.index }}</span></div>
+                                            <div class="col-5"><span style="font-weight: bold;">{{ search[0] }}</span>
+                                            </div>
+                                            <div class="col-6"><span>{{ search[1] }}</span></div>
+                                        </div>
+                                        <hr>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rising Search Topics Section -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="main-right-chart">
+
+                            <h5>Rising Search Topics</h5>
+                            <div class="topics-filter d-flex">
+                                <div class="interested-topic me-2">
+                                    <div>
+                                        <span>Select Category</span>
+                                    </div>
+                                    <div>
+                                        <select class="form-select" id="category-select">
+                                            <option value="45">Health</option>
+                                            <option value="16">Health News</option>
+                                            <option value="174">Science</option>
+                                            <option value="20">Sports</option>
+                                            <option value="29">Real Estate</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="interested-topic">
+                                    <div>
+                                        <span>Select Time Frame</span>
+                                    </div>
+                                    <div>
+                                        <select class="form-select" id="time-frame-select-rising">
+                                            <option value="now 1-d">Past Day</option>
+                                            <option value="now 7-d">Past 7 Days</option>
+                                            <option value="today 1-m">Past 30 Days</option>
+                                            <option value="today 12-m" selected>Past 12 Months</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="rising-topics">
+                                <!-- Google Trends Widget for Rising Topics -->
+                                <script type="text/javascript"
+                                    src="https://ssl.gstatic.com/trends_nrtr/3728_RC01/embed_loader.js"></script>
+                                <script type="text/javascript">
+                                    function renderRisingTopics(category, timeFrame) {
+                                        const risingTopicsDiv = document.getElementById('rising-topics');
+                                        risingTopicsDiv.innerHTML = '';  // Clear previous widget content
+                                        trends.embed.renderExploreWidgetTo(
+                                            risingTopicsDiv,
+                                            'RELATED_TOPICS',
+                                            {
+                                                "comparisonItem": [{ "geo": "", "time": timeFrame }],
+                                                "category": category,
+                                                "property": ""
+                                            },
+                                            {
+                                                "exploreQuery": "cat=" + category + "&date=" + timeFrame + "&hl=en-US",
+                                                "guestPath": "https://trends.google.com:443/trends/embed/"
+                                            }
+                                        );
+                                    }
+
+                                    document.getElementById('category-select').addEventListener('change', function () {
+                                        var category = this.value;
+                                        var timeFrame = document.getElementById('time-frame-select-rising').value;
+                                        renderRisingTopics(category, timeFrame);
+                                    });
+
+                                    document.getElementById('time-frame-select-rising').addEventListener('change', function () {
+                                        var timeFrame = this.value;
+                                        var category = document.getElementById('category-select').value;
+                                        renderRisingTopics(category, timeFrame);
+                                    });
+
+                                    // Initial load
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const category = document.getElementById('category-select').value;
+                                        const timeFrame = document.getElementById('time-frame-select-rising').value;
+                                        renderRisingTopics(category, timeFrame);
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+
+<script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3728_RC01/embed_loader.js"></script>
+<script>
+    // Fetch trend data and update the widget
+    function updateTrendsWidget(interests, timeFrame) {
+        const comparisonItems = interests.map(interest => ({
+            "keyword": interest,
+            "geo": "",
+            "time": timeFrame
+        }));
+        const exploreQuery = interests.map(interest => `q=${interest}&date=${timeFrame}`).join(',');
+        const chartDiv = document.getElementById('chart');
+        chartDiv.innerHTML = '';  // Clear previous widget content
+        trends.embed.renderExploreWidgetTo(
+            chartDiv,
+            'TIMESERIES',
+            { "comparisonItem": comparisonItems, "category": 0, "property": "" },
+            { "exploreQuery": exploreQuery, "guestPath": "https://trends.google.com:443/trends/embed/" }
+        );
+    }
+
+    // Event listener for interest change
+    function updateSelectedInterests() {
+        const selectedInterests = Array.from(document.querySelectorAll('.interest-checkbox:checked'))
+            .map(checkbox => checkbox.value);
+        const timeFrame = document.getElementById('time-frame-select-interest').value;
+        if (selectedInterests.length > 0) {
+            updateTrendsWidget(selectedInterests, timeFrame);
+        } else {
+            document.getElementById('chart').innerHTML = '';  // Clear the chart if no interests are selected
+        }
+    }
+
+    document.getElementById('select-top-5').addEventListener('change', function () {
+        const isChecked = this.checked;
+        document.querySelectorAll('.interest-checkbox').forEach(function (checkbox, index) {
+            if (index < 5) {
+                checkbox.checked = isChecked;
+            } else {
+                checkbox.checked = false;
+            }
+        });
+        updateSelectedInterests();
+    });
+
+    document.querySelectorAll('.interest-checkbox').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (!this.checked) {
+                document.getElementById('select-top-5').checked = false;
+            }
+            updateSelectedInterests();
+        });
+    });
+
+    document.getElementById('time-frame-select-interest').addEventListener('change', function () {
+        updateSelectedInterests();
+    });
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select top 5 interests by default
+        document.getElementById('select-top-5').checked = true;
+        document.querySelectorAll('.interest-checkbox').forEach(function (checkbox, index) {
+            if (index < 5) {
+                checkbox.checked = true;
+            }
+        });
+        updateSelectedInterests();
+    });
+
+    // New Chart.js code
+    document.getElementById('trendsForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const keyword = document.getElementById('keyword').value;
+        const response = await fetch('/pytrends', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ keyword: keyword })
+        });
+        const data = await response.json();
+        document.getElementById('results').style.display = 'block';
+
+        const interestData = data.interest_over_time.map(entry => ({
+            x: new Date(entry.date),
+            y: entry[keyword]
+        }));
+
+        const ctx = document.getElementById('interestChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Interest Over Time',
+                    data: interestData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'month'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const trendingSearchesTableBody = document.getElementById('trendingSearchesTable').getElementsByTagName('tbody')[0];
+        trendingSearchesTableBody.innerHTML = '';
+
+        data.trending_searches.forEach(search => {
+            const searchTerm = search.title;
+            const row = trendingSearchesTableBody.insertRow();
+            const cell = row.insertCell(0);
+            cell.innerText = searchTerm;
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('inlineFormSelectPref').addEventListener('change', function () {
+        var selectedValue = this.value;
+        updateTopSearches(selectedValue);
+    });
+
+    function updateTopSearches(timeFrame) {
+        fetch(`/trends?time_frame=${timeFrame}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const topSearchesSection = doc.querySelector('.top-searches-bottom-section');
+                document.querySelector('.top-searches-bottom-section').innerHTML = topSearchesSection.innerHTML;
+            });
+    }
+</script>
+
+{% endblock %}

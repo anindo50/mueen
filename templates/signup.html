@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<section class="">
+    <div class="container-fluid">
+        <div class="row account-login align-items-center">
+            <div class="col-lg-6 col-md-12 bg-account p-0"></div>
+            <div class="col-lg-6 col-md-12 p-0 d-flex justify-content-center flex-column">
+                <div class="login-box">
+                    <h1>Join Us!</h1>
+                    <p>Create Your Account</p>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <form method="POST" action="{{ url_for('signup') }}">
+                        <div class="mb-3">
+                            <label for="Username" class="form-label">Username</label>
+                            <input type="text" class="form-control border_bottom" name="username" id="Username" placeholder="Enter your username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Email" class="form-label">Email</label>
+                            <input type="email" class="form-control border_bottom" name="email" id="Email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Password" class="form-label">Password</label>
+                            <input type="password" class="form-control border_bottom" name="password" placeholder="Enter your password" id="password-field" required>
+                            <span toggle="#password-field" class="fa-solid fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ConfirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control border_bottom" name="confirm_password" placeholder="Confirm your password" id="confirm-password-field" required>
+                            <span toggle="#confirm-password-field" class="fa-solid fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <button type="submit" class="login-btn btn btn-primary">Sign Up</button>
+                        <h3 class="account-creation">Already have an account? <a href="{{ url_for('login') }}"> Log In</a></h3>
+                    </form>
+                </div>
+                <div class="social-icon">
+                    <ul>
+                        <li><a href="#"><i class="fa-brands fa-linkedin"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-whatsapp"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

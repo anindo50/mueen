@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}User Preferences{% endblock %}
+
+{% block navbar %}
+<div class="nav nav-black">
+    <div class="nav nav-red">
+        <div class="nav nav-white">
+            <ul class="list">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('explore') }}">Explore</a></li>
+                <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/notifications">Notifications</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                </li>
+                <li><a class="header-btn" href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<header class="header">
+    <div class="container-fluid">
+        <div class="blur-bg">
+            <div class="row">
+                <div class="col-md-4 col-4">
+                    <a href="/">
+                        <img class="img-fluid" src="{{ url_for('static', filename='images/Mu\'een_transparent2.png') }}" alt="logo" width="193" height="57">
+                    </a>
+                </div>
+                <div class="col-md-8 col-8 d-flex align-items-center justify-content-end">
+                    <ul class="nav-menu">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/explore">Explore</a></li>
+                        <li><a href="/about-us">About Us</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-expanded="false">
+                                Account
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/notifications">Notifications</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="header-btn" href="#">Contact Us</a></li>
+                    </ul>
+                    <button class="nav-btn open-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="nav-btn close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 bg-liner-serach-sidebar padding-custom-150">
+                <div class="login-box">
+                    <h1>Tell Us About Your Preferences</h1>
+                    <p>We'd love to know more about you</p>
+                    
+                    <form method="POST" action="{{ url_for('user_preferences') }}">
+                        <div class="mb-3">
+                            <label for="PreferenceField" class="form-label">Field of Interest</label>
+                            <select class="form-select" name="preference_field" id="PreferenceField" required>
+                                <option value="">Select a field</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Health">Health</option>
+                                <option value="Science">Science</option>
+                                <option value="Education">Education</option>
+                                <option value="Business">Business</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ResearchTopics" class="form-label">Research Topics</label>
+                            <input type="text" class="form-control border_bottom" name="research_topics" id="ResearchTopics" placeholder="Enter topics you're interested in" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="AdditionalInfo" class="form-label">Additional Information</label>
+                            <textarea class="form-control border_bottom" name="additional_info" id="AdditionalInfo" rows="3" placeholder="Any additional information"></textarea>
+                        </div>
+                        <button type="submit" class="login-btn btn btn-primary">Save Preferences</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

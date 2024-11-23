@@ -1,0 +1,3 @@
+2024-10-27 22:12:37,688 WARNING: Invalid email or password [in /Users/lamad-almuatasim/Documents/Taqat/Mu'een/app.py:520]
+2024-10-27 22:12:51,092 WARNING: Invalid email or password [in /Users/lamad-almuatasim/Documents/Taqat/Mu'een/app.py:520]
+2024-11-17 14:32:08,694 ERROR: Invalid data received from site: {'error': "'NoneType' object has no attribute 'lower'", 'site': 'mdpi'} [in /Users/lamad-almuatasim/Documents/TAQAT/Mueen/app.py:260]

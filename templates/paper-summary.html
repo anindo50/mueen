@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+
+{% block title %}{{ paperTitle }} | Summary{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 bg-liner-serach-sidebar padding-custom-150 para-text">
+                <div class="search-filter top-padding-paper-pages">
+                    <form class="row align-items-center" method="get" action="/search">
+                        <div class="col-3 col-sm-6 col-md-5 col-lg-8">
+                            <label class="visually-hidden" for="inlineFormInputGroupUsername">Search Article name,
+                                Authors, or keywords...</label>
+                            <div class="input-group">
+                                <div class="input-group-text"></div>
+                                <input type="text" class="form-control" name="query" id="inlineFormInputGroupUsername"
+                                    placeholder="Search Article name, Authors, or keywords...">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 d-flex justify-content-end align-items-center mobile-center">
+                            <div class="">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="paper-summery-padding">
+                    <div class="row serch-max-1200">
+                        <div class="col-lg-9">
+                            <h1 id="paperTitle" class="paperTitle"></h1>
+                            <p id="summary" class="summary"></p>
+
+                            <div class="search-card">
+                                <!-- Abstract Section -->
+                                <div class="paper-section" id="abstract">
+                                    <div class="paper-summery-padding-span">
+                                        <span>Abstract</span>
+                                    </div>
+                                    <div class="line-after-section"></div>
+                                    <p>Loading abstract content...</p>
+                                </div>
+                            </div>
+
+                            <div class="search-card">
+                                <!-- Key Findings Section -->
+                                <div class="paper-section" id="key-findings">
+                                    <div class="paper-summery-padding-span">
+                                        <span>Key Findings</span>
+                                    </div>
+                                    <div class="line-after-section"></div>
+                                    <p>Loading key findings content...</p>
+                                </div>
+                            </div>
+
+                            <div class="search-card">
+                                <!-- Methodology Section -->
+                                <div class="paper-section" id="methodology">
+                                    <div class="paper-summery-padding-span">
+                                        <span>Methodology</span>
+                                    </div>
+                                    <div class="line-after-section"></div>
+                                    <p>Loading methodology content...</p>
+                                </div>
+                            </div>
+
+                            <div class="search-card">
+                                <!-- Implications Section -->
+                                <div class="paper-section" id="implications">
+                                    <div class="paper-summery-padding-span">
+                                        <span>Implications</span>
+                                    </div>
+                                    <div class="line-after-section"></div>
+                                    <p>Loading implications content...</p>
+                                </div>
+                            </div>
+
+                            <div class="search-card">
+                                <!-- Conclusion Section -->
+                                <div class="paper-section" id="conclusion">
+                                    <div class="paper-summery-padding-span">
+                                        <span>Conclusion</span>
+                                    </div>
+                                    <div class="line-after-section"></div>
+                                    <p>Loading conclusion content...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="search-insight paper-summery-padding-left" id="main-insights">
+                                <h3>Main Insights</h3>
+                                <div id="insights-content">
+                                    <span>Loading insights...</span>
+                                </div>
+                            </div>
+                            <div>
+                                <a class="read-full-paper-btn" id="readFullPaperBtn" href="#" target="_blank">Read Full
+                                    Paper</a>
+                            </div>
+                            <div>
+                                <button id="reloadSummaryBtn" class="custom-reload-button">Not satisfied with the
+                                    summary?
+                                    Reload it</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div aria-live="polite" aria-atomic="true" style="position: relative;">
+        <!-- Position it at the bottom -->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11;">
+            <div id="reloadToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Notification</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    <div id="loadingContainer" class="loading-container">
+                        <div class="loader"></div>
+                    </div>
+                    Summary is reloading, please wait...
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script>
+    // Function to format text content
+    function formatText(content) {
+        // Custom formatting for better visual presentation
+        const formattedContent = content
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // Bold text
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')              // Italic text
+            .replace(/^\* (.*$)/gm, '<ul><li>$1</li></ul>');   // Unordered list bullets
+        return formattedContent;
+    }
+
+
+    // Function to populate content on the page
+    function populateContent(data, url) {
+        if (!data || Object.keys(data).length === 0) {
+            document.getElementById('error-message').textContent = "Failed to Load Details for This Paper.";
+            return;
+        }
+
+        // Populate the title and summary sections
+        document.getElementById('paperTitle').innerHTML = data.paperTitle || "Title not available.";
+        document.getElementById('summary').innerHTML = Array.isArray(data.summary) ? formatText(data.summary.join(" ")) : formatText(data.summary) || "Summary not available.";
+
+        // Dynamically update the document title
+        document.title = data.paperTitle;
+
+        // Populate abstract section
+        const abstractSection = document.querySelector("#abstract p");
+        abstractSection.innerHTML = Array.isArray(data.abstract) ? formatText(data.abstract.join(" ")) : formatText(data.abstract) || "Abstract not available.";
+
+        // Populate key findings section
+        const keyFindingsSection = document.querySelector("#key-findings p");
+        keyFindingsSection.innerHTML = Array.isArray(data.keyFindings) ? formatText(data.keyFindings.join(" ")) : formatText(data.keyFindings) || "Key findings not available.";
+
+        // Populate methodology section
+        const methodologySection = document.querySelector("#methodology p");
+        methodologySection.innerHTML = Array.isArray(data.methods) ? formatText(data.methods.join(" ")) : formatText(data.methods) || "Methodology not available.";
+
+        // Populate implications section
+        const implicationsSection = document.querySelector("#implications p");
+        implicationsSection.innerHTML = Array.isArray(data.implications) ? formatText(data.implications.join(" ")) : formatText(data.implications) || "Implications not available.";
+
+        // Populate conclusion section
+        const conclusionSection = document.querySelector("#conclusion p");
+        conclusionSection.innerHTML = Array.isArray(data.conclusion) ? formatText(data.conclusion.join(" ")) : formatText(data.conclusion) || "Conclusion not available.";
+
+        // Populate insights section
+        const insightsContainer = document.getElementById('insights-content');
+        insightsContainer.innerHTML = '';
+        if (Array.isArray(data.insights) && data.insights.length > 0) {
+            data.insights.forEach(insight => {
+                const insightElement = document.createElement('p');
+                insightElement.innerHTML = formatText(insight);
+                insightsContainer.appendChild(insightElement);
+            });
+        } else {
+            insightsContainer.textContent = "Insights not available.";
+        }
+
+        // Set read full paper link
+        const readFullPaperButton = document.getElementById('readFullPaperBtn');
+        readFullPaperButton.href = url;
+        readFullPaperButton.target = "_blank";
+    }
+
+
+
+
+    // Function to display insights
+    function displayInsights(insights) {
+        const insightsContainer = document.getElementById('insights-content');
+        insightsContainer.innerHTML = '';
+        insights.forEach(insight => {
+            const insightElement = document.createElement('div');
+            insightElement.innerHTML = formatText(insight);
+            insightsContainer.appendChild(insightElement);
+        });
+    }
+
+
+    function populateErrorContent() {
+        const errorMessage = "Failed to load content. Please try again later.";
+
+        // Abstract error
+        const abstractSection = document.querySelector("#abstract p");
+        abstractSection.innerHTML = errorMessage;
+
+        // Key Findings error
+        const keyFindingsSection = document.querySelector("#key-findings p");
+        keyFindingsSection.innerHTML = errorMessage;
+
+        // Methodology error
+        const methodologySection = document.querySelector("#methodology p");
+        methodologySection.innerHTML = errorMessage;
+
+        // Implications error
+        const implicationsSection = document.querySelector("#implications p");
+        implicationsSection.innerHTML = errorMessage;
+
+        // Conclusion error
+        const conclusionSection = document.querySelector("#conclusion p");
+        conclusionSection.innerHTML = errorMessage;
+
+        // Insights error
+        const insightsContainer = document.getElementById('insights-content');
+        insightsContainer.innerHTML = errorMessage;
+    }
+
+
+    // Function to fetch paper details
+    function fetchPaperDetails(url) {
+        fetch('/get_details?url=' + encodeURIComponent(url))
+            .then(response => response.json())  // Expect JSON response
+            .then(data => {
+                if (data && !data.error) {
+                    populateContent(data, url);
+                } else {
+                    throw new Error('Data retrieval failed.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching paper details:', error);
+                const paperTitleElement = document.getElementById('paperTitle');
+                paperTitleElement.textContent = "Failed to load details for this paper.";
+                document.title = "Failed to load details for this paper.";  // Update tab title
+
+                // Show the same error message in all sections
+                populateErrorContent();
+
+                const readFullPaperButton = document.getElementById('readFullPaperBtn');
+                readFullPaperButton.href = url;  // Ensure the button still points to the full paper
+            });
+    }
+
+    // Fetch paper details when the page loads
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const url = urlParams.get('url');
+        if (url) {
+            fetchPaperDetails(url);
+        } else {
+            console.error('Paper URL not found in the query parameters.');
+        }
+    });
+
+    // Function to reload the summary and show toast notification
+    function reloadSummary(url) {
+        // Get the toast element
+        const toastElement = new bootstrap.Toast(document.getElementById('reloadToast'), {
+            autohide: false  // Prevent automatic hiding
+        });
+
+        // Show the toast
+        toastElement.show();
+
+        // Send a request to delete the summary and generate a new one
+        fetch('/reload_summary', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ url: url })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Summary reloaded in the background.');
+                // Hide the toast after the summary is reloaded
+                toastElement.hide();
+
+                // Optionally reload the page or refresh the content dynamically
+                location.reload();  // This will reload the page
+            })
+            .catch(error => {
+                console.error('Error reloading summary:', error);
+                toastElement.hide();  // Also hide the toast in case of an error
+            });
+    }
+
+    // Event listener for the reload button
+    document.getElementById('reloadSummaryBtn').addEventListener('click', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const url = urlParams.get('url');
+        if (url) {
+            reloadSummary(url);
+        } else {
+            console.error('Paper URL not found in the query parameters.');
+        }
+    });
+
+
+
+
+</script>
+
+{% endblock %}

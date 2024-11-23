@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+{% block content %}
+
+<section>
+    <div class="container">
+        <div class="row about-us">
+            <div class="col-lg-4">
+                <img class="img-fluid" src="{{ url_for('static', filename='images/about1.png') }}" alt="img">
+                <div class="content">
+                    <h4>Access Trusted
+                        <span style="color: #2D2D2D;">Scientific Papers</span>
+                    </h4>
+                    <p>Discover a wide range of trusted scientific papers that have undergone rigorous peer review and are published in reputable journals. Our platform ensures you get access to high-quality, credible research work.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-reverse">
+                <div class="content">
+                    <h4>Explore
+                        <span style="color: #2D2D2D;">Proactive</span> Insights
+                    </h4>
+                    <p>Stay ahead in your field by exploring proactive insights derived from the latest research. Our tools help you analyze and interpret trends, providing you with a competitive edge in your academic or professional pursuits.</p>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                <img class="img-fluid" src="{{ url_for('static', filename='images/Read.jpeg') }}" alt="img">
+            </div>
+            <div class="col-lg-4">
+                <img class="img-fluid" src="{{ url_for('static', filename='images/trendanalysis.jpg') }}" alt="img">
+                <div class="content">
+                    <h4>Trend
+                        <span style="color: #2D2D2D;">Analysis</span> and <span style="color: #2D2D2D;">Alerts</span>
+                    </h4>
+                    <p>Keep track of emerging trends and receive alerts on important updates in your area of interest. Our platform provides comprehensive trend analysis to help you stay informed and make data-driven decisions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='script/script.js') }}"></script>

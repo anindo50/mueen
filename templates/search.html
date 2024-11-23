@@ -1,0 +1,583 @@
+{% extends "base.html" %}
+
+{% block title %}{{ query }} | Search{% endblock %}
+
+{% block navbar %}
+<div class="nav nav-black">
+    <div class="nav nav-red">
+        <div class="nav nav-white">
+            <ul class="list">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('explore') }}">Explore</a></li>
+                <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/notifications">Notifications</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                </li>
+                <li><a class="header-btn" href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<header class="header">
+    <div class="container-fluid">
+        <div class="blur-bg">
+            <div class="row">
+                <div class="col-md-4 col-4">
+                    <a href="/">
+                        <img class="img-fluid" src="{{ url_for('static', filename='images/Mueen_transparent2.png') }}"
+                            alt="logo" width="193" height="57">
+                    </a>
+                </div>
+                <div class="col-md-8 col-8 d-flex align-items-center justify-content-end">
+                    <ul class="nav-menu">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/explore">Explore</a></li>
+                        <li><a href="/about-us">About Us</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                aria-expanded="false">Account</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/notifications">Notifications</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="header-btn" href="{{ url_for('contact_us') }}">Contact Us</a></li>
+                    </ul>
+                    <button class="nav-btn open-btn"><i class="fas fa-bars"></i></button>
+                    <button class="nav-btn close-btn"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<!-- Modal -->
+<div class="modal fade" id="alert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body alert-body">
+                <div>
+                    <img src="{{ url_for('static', filename='images/alert.png') }}" alt="alert">
+                    <h3>Alert For "{{ query }}"</h3>
+                    <p>Receive alerts for significant updates and new articles on this topic.</p>
+                    <form id="createAlertForm">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="alertTopic" value="{{ query }}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">CREATE ALERT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2 col-md-12 bg-liner-serach-sidebar p-0">
+                <div class="sidebar">
+                    <!-- Sidebar navigation -->
+                    <ul class="nav-links">
+                        <li class="active">
+                            <a href="{{ url_for('home') }}">
+                                <span class="link_name">Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="iocn-link">
+                                <a href="#">
+                                    <i class='bx bx-book-alt'></i>
+                                    <span class="link_name">Sort By Relevance</span>
+                                </a>
+                                <i class='fa-solid fa-chevron-down arrow'></i>
+                            </div>
+                            <ul class="sub-menu">
+                                <li><a href="#" class="sort-option">Sort By Relevance</a></li>
+                                <li><a href="#" class="sort-option">Sort By Date</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#alert">
+                                <span class="link_name alerting">Create Alert</span>
+                            </a>
+                            <ul class="sub-menu blank">
+                                <li><a class="link_name" href="#">Create Alert</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#summarizeModal">
+                                <span class="link_name alerting">Summarize Papers</span>
+                            </a>
+                            <ul class="sub-menu blank">
+                                <li><a class="link_name" href="#">Summarize Papers</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- Modal for Summarizing Papers -->
+            <div class="modal fade" id="summarizeModal" tabindex="-1" aria-labelledby="summarizeModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content styled-modal">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="summarizeModalLabel">Selected Papers</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="selected-items mt-3">
+                                <ul id="modalSelectedItemsList" class="styled-list"></ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="modalClearAllBtn" class="btn btn-secondary">Clear All</button>
+                            <button id="modalSummarizeBtn" class="btn btn-primary">Summarize Papers</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-10 col-md-12 bg-liner-serach-sidebar padding-custom-150">
+                <div class="search-filter">
+                    <form class="row align-items-center" action="{{ url_for('search') }}" method="GET"
+                        onsubmit="saveSearchQuery()">
+                        <div class="col-3 col-sm-6 col-md-5 col-lg-8">
+                            <label class="visually-hidden" for="inlineFormInputGroupUsername">Search Article name,
+                                Authors, or keywords...</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="query" id="inlineFormInputGroupUsername"
+                                    placeholder="Search Article name, Authors, or keywords...">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 d-flex justify-content-end align-items-center mobile-center">
+                            <div class="">
+                                <button type="submit" class="btn btn-primary btn-large w-100">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row serch-max-1200">
+                    <div class="col-lg-9">
+                        <div id="loadingContainer" class="loading-container">
+                            <div class="loader"></div>
+                        </div>
+                        <div class="search-card">
+                            <div class="column middle" id="searchResultsContainer"></div>
+                        </div>
+                        <div class="total-result-bar">
+                            <div class="pagination-container"></div>
+                            <div>
+                                <span class="total-result" id="resultsCount"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="summary-container" id="summary-container"></div>
+                        <div class="search-insight">
+                            <h3>Search Insights</h3>
+                            <div id="summary-text-container">
+                                <p id="summary-text">Loading insights...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Function to format text content
+    function formatText(content) {
+        return content
+            .replace(/\*\*(.*?)\*\*/g, '<br><strong>$1</strong>') // Bold with line break
+            .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italics
+            .replace(/^\* (.*$)/gm, '<ul><li>$1</li></ul>'); // Unordered list bullets
+    }
+
+    // Function to sort results by relevance or date
+    function sortResults(criteria) {
+        console.log('Sorting by:', criteria);
+        if (criteria === 'date') {
+            allResults.sort((a, b) => new Date(b.date) - new Date(a.date));  // Sort by date, latest first
+        } else {
+            allResults.sort((a, b) => b.relevance - a.relevance);  // Sort by relevance
+        }
+        updateResults(1);  // Refresh the results display
+    }
+
+    // Function to handle the search query
+    function saveSearchQuery() {
+        const query = $('#inlineFormInputGroupUsername').val();
+        fetch(`/search?query=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => displayResults(data))
+            .catch(console.error);
+    }
+
+    // Function to fetch articles and handle pagination
+    function apiQuery(query) {
+        showLoading();
+        const apiUrl = `/fetch-articles?q=${encodeURIComponent(query)}`;
+        $.ajax({
+            url: apiUrl,
+            method: "GET",
+            contentType: "application/json",
+            success: function (response) {
+                if (response.error) {
+                    $('#searchResultsContainer').html(`<p>Error: ${response.error}</p>`);
+                    allResults = [];
+                } else {
+                    allResults = response;
+                    updateResults(1);  // You can show partial results here instead of waiting for all data
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#searchResultsContainer').html(`<p>Error: ${status}</p>`);
+            },
+            complete: hideLoading
+        });
+    }
+
+
+
+    // Function to update search results
+    function updateResults(page) {
+        const resultsPerPage = 10;
+        const startIndex = (page - 1) * resultsPerPage;
+        const endIndex = startIndex + resultsPerPage;
+        const visibleResults = allResults.slice(startIndex, endIndex);
+
+        $('#searchResultsContainer').empty();
+        if (visibleResults.length) {
+            visibleResults.forEach(result => {
+                $('#searchResultsContainer').append(createResultCard(result));
+            });
+            restoreSelections();
+        } else {
+            $('#searchResultsContainer').html('<p>No results found.</p>');
+        }
+
+        updateResultsCount();
+        createPagination(Math.ceil(allResults.length / resultsPerPage), page);
+    }
+
+    // Function to create result card
+    function createResultCard(body) {
+        const url = `/paper-summary?url=${encodeURIComponent(body.url)}&title=${encodeURIComponent(body.title)}`;
+        const description = (body.description || "Description not available").replace("[...] Read more.", "...");
+        const authorsList = body.authors ? body.authors.join(', ') : "Authors not available";
+
+        // Limit authors to 2 lines max
+        const maxAuthorsLength = 100; // Adjust this value as needed
+        const truncatedAuthors = authorsList.length > maxAuthorsLength ? `${authorsList.slice(0, maxAuthorsLength)}...` : authorsList;
+
+        const dateText = body.date || "Date not available";
+
+        return `
+        <div class="search-card">
+            <div class="title-checkbox-container">
+                <input type="checkbox" class="custom-checkbox" name="selectedUrls" value="${body.url}">
+                <a href="${url}" class="card-link"><h3>${body.title}</h3></a>
+            </div>
+            <h4>${truncatedAuthors}</h4>
+            <p>${dateText}</p>
+            <p>${description}</p>
+            <div class="search-card-details">
+                <span class="save"><a href="#"><i class="fa-regular fa-star"></i> Save</a></span>
+                <span class="releated-articles"><a href="#">Related Articles</a></span>
+                <span class="Read Full Paper read-full-paper"><a href="${body.url}" target="_blank">Read Full Paper</a></span>
+            </div>
+        </div>`;
+    }
+
+
+    // Function to update the results count
+    function updateResultsCount() {
+        $('#resultsCount').text(allResults.length);
+    }
+
+    // Function to create pagination
+    function createPagination(totalPages, currentPage) {
+        const paginationContainer = $('<div class="pagination"></div>');
+        $(".pagination").remove();  // Remove previous pagination
+
+        if (totalPages > 1) {
+            if (currentPage > 1) {
+                paginationContainer.append(`<a href="#" onclick="updateResults(${currentPage - 1})">&laquo;</a>`);
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                const activeClass = i === currentPage ? ' class="active"' : '';
+                paginationContainer.append(`<a href="#" onclick="updateResults(${i})"${activeClass}>${i}</a>`);
+            }
+
+            if (currentPage < totalPages) {
+                paginationContainer.append(`<a href="#" onclick="updateResults(${currentPage + 1})">&raquo;</a>`);
+            }
+
+            $(".pagination-container").empty().append(paginationContainer);
+        }
+    }
+
+    // Function to store selection and update display of selected items
+    function storeSelection(url) {
+        let selectedUrls = JSON.parse(localStorage.getItem('selectedUrls')) || [];
+        selectedUrls = selectedUrls.includes(url) ? selectedUrls.filter(item => item !== url) : [...selectedUrls, url];
+        localStorage.setItem('selectedUrls', JSON.stringify(selectedUrls));
+
+        // Update the displayed selected items in the modal
+        displaySelectedItems(selectedUrls);
+        updateSummarizeButtonState();
+    }
+
+    // Function to restore selections (checkboxes) from local storage
+    function restoreSelections() {
+        const selectedUrls = JSON.parse(localStorage.getItem('selectedUrls')) || [];
+        selectedUrls.forEach(url => {
+            $(`input.custom-checkbox[value="${url}"]`).prop('checked', true);
+        });
+    }
+
+    // Function to display the selected items under the Create Alert button
+    function displaySelectedItems(selectedUrls) {
+        const modalSelectedItemsList = $('#modalSelectedItemsList');
+        modalSelectedItemsList.empty(); // Clear the modal list
+
+        if (selectedUrls.length) {
+            selectedUrls.forEach(url => {
+                const result = allResults.find(item => item.url === url);
+                if (result) {
+                    modalSelectedItemsList.append(`
+                    <li>${result.title} 
+                        <button class="btn btn-link btn-sm remove-item" data-url="${url}">Remove</button>
+                    </li>`);
+                }
+            });
+        } else {
+            modalSelectedItemsList.append('<li>No papers selected</li>');
+        }
+    }
+
+
+
+
+    // Function to clear all selections
+    function clearAllSelections() {
+        localStorage.removeItem('selectedUrls');
+        $('input.custom-checkbox').prop('checked', false); // Uncheck all checkboxes
+        $('#modalSelectedItemsList').empty().append('<li>No papers selected</li>'); // Clear the modal list
+        updateSummarizeButtonState();
+    }
+
+
+    // Event listener for Clear All button in the modal
+    $('#modalClearAllBtn').on('click', function () {
+        clearAllSelections();
+    });
+
+    // Function to remove individual items from the selection
+    $(document).on('click', '.remove-item', function () {
+        const urlToRemove = $(this).data('url');
+        let selectedUrls = JSON.parse(localStorage.getItem('selectedUrls')) || [];
+        selectedUrls = selectedUrls.filter(url => url !== urlToRemove);
+        localStorage.setItem('selectedUrls', JSON.stringify(selectedUrls));
+
+        // Uncheck the associated checkbox
+        $(`input.custom-checkbox[value="${urlToRemove}"]`).prop('checked', false);
+
+        // Update the modal and the checkboxes
+        displaySelectedItems(selectedUrls);
+        restoreSelections();
+        updateSummarizeButtonState();
+    });
+
+
+
+    // Call displaySelectedItems on page load to restore selections
+    $(document).ready(function () {
+        const selectedUrls = JSON.parse(localStorage.getItem('selectedUrls')) || [];
+        displaySelectedItems(selectedUrls); // Display previously selected items
+        restoreSelections(); // Restore checkbox states
+    });
+    // Function to save an article
+    function saveResult(title, url, authors, description, originalUrl) {
+        const data = {
+            title, url: originalUrl, authors, description, search_query: query, original_url: originalUrl
+        };
+
+        $.ajax({
+            url: "/save_article",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: () => alert("Article saved in the library!"),
+            error: () => alert("Failed to save the article.")
+        });
+    }
+
+    // Function to summarize the search query
+    function summarizeQuery(query) {
+        fetch(`/summarize-query?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => $('#summary-text').html(formatText(data.summary_insight)))
+            .catch(console.error);
+    }
+
+    // Function to summarize multiple papers
+    function summarizePapers() {
+        const selectedUrls = $('input[name="selectedUrls"]:checked').map(function () {
+            return $(this).val();
+        }).get();
+
+        if (selectedUrls.length) {
+            // Build the query string with each URL as a separate parameter
+            const queryParams = selectedUrls.map(url => `selectedUrls[]=${encodeURIComponent(url)}`).join('&');
+            const summarizeUrl = `/multiple-papers-summarized?${queryParams}`;
+
+            // Open the summary page with the correct query string
+            window.open(summarizeUrl, '_blank');
+        }
+    }
+
+    // Event listener for the "Summarize Papers" button in the modal
+    $('#modalSummarizeBtn').on('click', function () {
+        summarizePapers();
+    });
+
+
+    // Function to create alert
+    function createAlert(query) {
+        $.ajax({
+            url: "/create_alert",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ query }),
+            success: () => alert("Alert created successfully!"),
+            error: () => alert("Failed to create alert.")
+        });
+    }
+
+    // Function to show loading state
+    function showLoading() {
+        $('#loadingContainer').show();
+    }
+
+    // Function to hide loading state
+    function hideLoading() {
+        $('#loadingContainer').hide();
+    }
+
+
+    let allResults = [];  // Declare this at the top
+
+    // Initialize event listeners and fetch query data on page load
+    $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        query = urlParams.get('query');
+        $('#inlineFormInputGroupUsername').val(query);
+
+        // Show loading and fetch search results and summary
+        showLoading();
+        apiQuery(query);
+        summarizeQuery(query);
+
+        // Handle save action for articles
+        $(document).on('click', '.save a', function (event) {
+            event.preventDefault();
+            const card = $(this).closest('.search-card');
+            const title = card.find('h3').text();
+            const url = card.find('a.card-link').attr('href');
+            const authors = card.find('h4').text();
+            const description = card.find('p').text();
+            const originalUrl = card.find('.read-full-paper a').attr('href');
+            saveResult(title, url, authors, description, originalUrl);
+        });
+
+
+
+        // Handle checkbox changes
+        $(document).on('change', 'input.custom-checkbox', function () {
+            storeSelection($(this).val());
+            updateSummarizeButtonState();
+        });
+
+        // Initialize summarize button state
+        updateSummarizeButtonState();
+
+        // Create alert modal logic
+        $('#createAlertModal').on('show.bs.modal', function () {
+            $('#alertTopic').val(query);
+        });
+
+        // Form submission for creating alerts
+        $('#createAlertForm').on('submit', function (e) {
+            e.preventDefault();
+            const alertTopic = $('#alertTopic').val();
+            createAlert(alertTopic);
+        });
+
+        // Summarize selected papers on button click
+        $('.Summarize-btn').on('click', function (event) {
+            event.preventDefault();
+            summarizePapers();
+        });
+
+        // Handle sorting dropdown selection
+        $('.nav-links a').click(function () {
+            const selectedOption = $(this).text().trim();
+
+            // Update the dropdown text based on the selected option
+            if (selectedOption === 'Sort By Relevance') {
+                $('.iocn-link > a > span.link_name').text('Sort By Relevance');
+                sortResults('relevance');
+            } else if (selectedOption === 'Sort By Date') {
+                $('.iocn-link > a > span.link_name').text('Sort By Date');
+                sortResults('date');
+            }
+        });
+    });
+
+    // Function to update the state of the Summarize button (enable/disable)
+    function updateSummarizeButtonState() {
+        const selectedUrls = JSON.parse(localStorage.getItem('selectedUrls')) || [];
+        const isDisabled = selectedUrls.length === 0;
+        $('#modalSummarizeBtn').prop('disabled', isDisabled); // Disable button if no selections
+    }
+
+
+    function showLoading() {
+        $('#loadingContainer').show();
+    }
+
+    function hideLoading() {
+        $('#loadingContainer').hide();
+    }
+
+</script>
+
+<!-- External JS and CSS libraries -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='script/script.js') }}"></script>
+
+
+{% endblock %}

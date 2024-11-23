@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Explore{% endblock %}
+
+{% block content %}
+<section class="padding-custom-home">
+    <div class="container home-section explore-section">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12">
+                <div class="heading text-center">
+                    <h1 class="first-heading">What You Need,</h1>
+                    <h1 class="second-heading">When You Need It</h1>
+                    <p class="description">Spend less time searching and more time exploring valuable insights in the world of health and medical research.</p>  
+                </div>
+                <div class="row justify-content-center mt-5">
+                    <div class="col-md-4">
+                        <a href="{{ url_for('library') }}" class="explore-item">
+                            <div class="d-flex align-items-center">
+                                <div class="member-img">
+                                    <img src="{{ url_for('static', filename='images/My Library.svg') }}" alt="My Library Icon">
+                                </div>
+                                <div class="member-heading">
+                                    <h4>My Library</h4>
+                                    <h5>Access your saved publications and articles</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ url_for('interests') }}" class="explore-item">
+                            <div class="d-flex align-items-center">
+                                <div class="universities-img">
+                                    <img src="{{ url_for('static', filename='images/My Interests.svg') }}" alt="My Interests Icon">
+                                </div>
+                                <div class="universities-heading">
+                                    <h4>My Interests</h4>
+                                    <h5>Discover content based on your interests</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ url_for('trends') }}" class="explore-item">
+                            <div class="d-flex align-items-center">
+                                <div class="searches-img">
+                                    <img src="{{ url_for('static', filename='images/Flow Of Trends.svg') }}" alt="Flow of Trends Icon">
+                                </div>
+                                <div class="searches-heading">
+                                    <h4>Flow Of Trends</h4>
+                                    <h5>Discover emerging global and local trends.</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='script/script.js') }}"></script>

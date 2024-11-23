@@ -1,0 +1,80 @@
+2024-10-02 15:12:49,411 WARNING: Invalid email or password [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:580]
+2024-10-02 15:24:43,434 WARNING: Invalid email or password [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:585]
+2024-10-03 09:44:55,855 ERROR: Unexpected error: 429 Resource has been exhausted (e.g. check quota). [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:492]
+Traceback (most recent call last):
+  File "d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py", line 439, in get_details
+    summary = engine.generate_content(prompt)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\generative_text_engine.py", line 13, in generate_content
+    return self.model.generate_content(content)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\generativeai\generative_models.py", line 248, in generate_content
+    response = self._client.generate_content(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 566, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\retry\retry_unary.py", line 293, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\retry\retry_unary.py", line 153, in retry_target
+    _retry_error_helper(
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\retry\retry_base.py", line 212, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\retry\retry_unary.py", line 144, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\timeout.py", line 120, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.ResourceExhausted: 429 Resource has been exhausted (e.g. check quota).
+2024-10-03 09:45:59,929 ERROR: Unexpected error: 429 Resource has been exhausted (e.g. check quota). [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:492]
+Traceback (most recent call last):
+  File "d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py", line 439, in get_details
+    summary = engine.generate_content(prompt)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\generative_text_engine.py", line 13, in generate_content
+    return self.model.generate_content(content)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\generativeai\generative_models.py", line 248, in generate_content
+    response = self._client.generate_content(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 566, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\retry\retry_unary.py", line 293, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\retry\retry_unary.py", line 153, in retry_target
+    _retry_error_helper(
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\retry\retry_base.py", line 212, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\retry\retry_unary.py", line 144, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\timeout.py", line 120, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Local\Programs\Python\Python311\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.ResourceExhausted: 429 Resource has been exhausted (e.g. check quota).
+2024-10-03 10:01:32,802 ERROR: Invalid data received from site: {'error': "Redirect response '303 See Other' for url 'https://link.springer.com/search?query=?new-search=true&query=covid19&content-type=article&content-type=research&dateFrom=&dateTo=&sortBy=relevance'\nRedirect location: 'https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https%3A%2F%2Flink.springer.com%2Fsearch%3Fquery%3D%253Fnew-search%253Dtrue%26query%3Dcovid19%26content-type%3Darticle%26content-type%3Dresearch%26dateFrom%3D%26dateTo%3D%26sortBy%3Drelevance'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303", 'site': 'springer'} [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:217]
+2024-10-03 10:01:32,809 ERROR: Invalid data received from site: {'error': '', 'site': 'omjournal'} [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:217]
+2024-10-03 10:01:32,809 ERROR: Invalid data received from site: {'error': "Redirect response '303 See Other' for url 'https://www.nature.com/search?q=covid19'\nRedirect location: 'https://idp.nature.com/authorize?response_type=cookie&client_id=grover&redirect_uri=https%3A%2F%2Fwww.nature.com%2Fsearch%3Fq%3Dcovid19'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303", 'site': 'nature'} [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:217]
+2024-10-03 10:02:53,709 ERROR: Invalid data received from site: {'error': "Redirect response '303 See Other' for url 'https://link.springer.com/search?query=?new-search=true&query=covid19&content-type=article&content-type=research&dateFrom=&dateTo=&sortBy=relevance'\nRedirect location: 'https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https%3A%2F%2Flink.springer.com%2Fsearch%3Fquery%3D%253Fnew-search%253Dtrue%26query%3Dcovid19%26content-type%3Darticle%26content-type%3Dresearch%26dateFrom%3D%26dateTo%3D%26sortBy%3Drelevance'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303", 'site': 'springer'} [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:217]
+2024-10-03 10:02:53,709 ERROR: Invalid data received from site: {'error': '', 'site': 'omjournal'} [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:217]
+2024-10-03 10:02:53,709 ERROR: Invalid data received from site: {'error': "Redirect response '303 See Other' for url 'https://www.nature.com/search?q=covid19'\nRedirect location: 'https://idp.nature.com/authorize?response_type=cookie&client_id=grover&redirect_uri=https%3A%2F%2Fwww.nature.com%2Fsearch%3Fq%3Dcovid19'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303", 'site': 'nature'} [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:217]
+2024-10-03 10:03:39,528 ERROR: Invalid data received from site: {'error': "Redirect response '303 See Other' for url 'https://link.springer.com/search?query=?new-search=true&query=covid19&content-type=article&content-type=research&dateFrom=&dateTo=&sortBy=relevance'\nRedirect location: 'https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https%3A%2F%2Flink.springer.com%2Fsearch%3Fquery%3D%253Fnew-search%253Dtrue%26query%3Dcovid19%26content-type%3Darticle%26content-type%3Dresearch%26dateFrom%3D%26dateTo%3D%26sortBy%3Drelevance'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303", 'site': 'springer'} [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:217]
+2024-10-03 10:03:39,528 ERROR: Invalid data received from site: {'error': '', 'site': 'omjournal'} [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:217]
+2024-10-03 10:03:39,528 ERROR: Invalid data received from site: {'error': "Redirect response '303 See Other' for url 'https://www.nature.com/search?q=covid19'\nRedirect location: 'https://idp.nature.com/authorize?response_type=cookie&client_id=grover&redirect_uri=https%3A%2F%2Fwww.nature.com%2Fsearch%3Fq%3Dcovid19'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/303", 'site': 'nature'} [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:217]
+2024-10-03 10:05:35,402 ERROR: Error fetching from omjournal, attempt 1. Error:  [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:203]
+2024-10-03 10:05:40,487 ERROR: Error fetching from omjournal, attempt 2. Error:  [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:203]
+2024-10-03 10:05:45,623 ERROR: Error fetching from omjournal, attempt 3. Error:  [in d:\Documents\Work\TAQAT\Mu'een Project\Mu'een\app.py:203]
